@@ -1,14 +1,15 @@
 import 'package:api_consume/infrastructure/model/user_model.dart';
+import 'package:api_consume/providers.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserDataBody extends StatelessWidget {
+class UserDataBody extends ConsumerWidget {
   const UserDataBody({
     Key? key,
-    required this.userData,
   }) : super(key: key);
-  final User userData;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userData = ref.watch(currentUser);
     return Expanded(
       child: Column(
         children: [

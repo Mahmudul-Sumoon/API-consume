@@ -42,8 +42,11 @@ class MyHomePage extends ConsumerWidget {
               data.when(
                 initial: () => Container(),
                 loading: () => const CircularProgressIndicator(),
-                success: (User data) => UserDataBody(
-                  userData: data,
+                success: (User data) => ProviderScope(
+                  overrides: [
+                    currentUser.overrideWithValue(data),
+                  ],
+                  child: const UserDataBody(),
                 ),
                 error: (e) => Text(e.toString()),
               ),
