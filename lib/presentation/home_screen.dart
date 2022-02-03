@@ -4,17 +4,32 @@ import 'package:api_consume/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyHomePage extends ConsumerWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    late TextEditingController newValue = TextEditingController();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    // final x = ref.watch(utilitiesProvider);
     final data = ref.watch(userStateNotifierProvider);
-    //print(data);
+    late TextEditingController newValue = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("HELLO"),
+        title: const Text("success page"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ref.read(utilitiesProvider).deleteToken();
+              ref.read(isLoggedInProvider.state).state = false;
+            },
+            icon: const Icon(Icons.exit_to_app),
+          ),
+        ],
       ),
       body: Center(
         child: Padding(
@@ -34,8 +49,8 @@ class MyHomePage extends ConsumerWidget {
                       .read(userStateNotifierProvider.notifier)
                       .fetchUser(newValue.text.trim());
                 },
-                child: const Text(
-                  'Get Data',
+                child: Text(
+                  ref.read(utilitiesProvider).getToken() ?? 'Get Data',
                 ),
               ),
               const SizedBox(height: 20),
